@@ -10,6 +10,7 @@ class BrandController extends Controller
     //
     public function index(){
         $brands = Brand::select([
+            'id',
             'name_'.app()->getLocale().' as name',
             'img',
         ])->get();
@@ -26,6 +27,7 @@ class BrandController extends Controller
     public function show($id){
 
         $brand = Brand::select(
+            'id',
             'name_'.app()->getLocale().' as name',
             'img',
 

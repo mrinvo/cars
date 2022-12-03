@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Car;
 use App\Models\Rent;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class CarController extends Controller
     public function show($id){
 
         $car = car::select(
+            'id',
             'name_'.app()->getLocale().' as name',
             'img',
             'type',
@@ -69,6 +71,12 @@ class CarController extends Controller
     }
 
     public function brandshow($id){
+        $brand = Brand::select([
+            'id',
+            'name_'.app()->getLocale().' as name',
+            'img',
+        ])->first();
+
         $cars = Car::with('brand')->select([
             'name_'.app()->getLocale().' as name',
             'img',
@@ -86,6 +94,7 @@ class CarController extends Controller
         if($cars){
             $response = [
                'message' => trans('api.fetch'),
+               'brand' => $brand,
                 'data' => $cars,
 
             ];
@@ -93,6 +102,7 @@ class CarController extends Controller
         }else{
             $response = [
                 'message' => trans('api.notfound'),
+                'brand' => $brand,
                 'data' => $cars,
 
             ];
