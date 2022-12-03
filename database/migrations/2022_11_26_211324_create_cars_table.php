@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name_en');
             $table->string('name_ar');
             $table->string('img');
-            $table->enum('type',[1,2,3,4,5,6]);
+            $table->foreignId('type_id')->constrained('types');
             $table->foreignId('brand_id')->constrained('brands');
             $table->integer('capacity');
             $table->integer('back_capacity');

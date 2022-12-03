@@ -14,7 +14,7 @@ class Car extends Model
         'name_en',
         'name_ar',
         'img',
-        'type',
+        'type_id',
         'brand_id',
         'capacity',
         'back_capacity',
@@ -30,5 +30,8 @@ class Car extends Model
 
     public function brand(){
         return $this->belongsTo(Brand::class);
+    }
+    public function type(){
+        return $this->belongsTo(Type::class);
     }
 }

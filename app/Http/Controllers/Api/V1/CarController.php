@@ -48,7 +48,8 @@ class CarController extends Controller
             'discounted_price',
             'deposit',
 
-            )->where('id',$id)->first();
+            )->with(['rent','brand','type'])->where('id',$id)->first();
+
         if($car){
             $response = [
                'message' => trans('api.fetch'),
@@ -77,7 +78,8 @@ class CarController extends Controller
             'img',
         ])->first();
 
-        $cars = Car::with('brand')->select([
+        $cars = Car::has('brand')->select([
+            'id',
             'name_'.app()->getLocale().' as name',
             'img',
             'type',
@@ -117,6 +119,7 @@ class CarController extends Controller
     public function typeshow($id){
 
         $cars = Car::select([
+            'id',
             'name_'.app()->getLocale().' as name',
             'img',
             'type',
@@ -128,7 +131,7 @@ class CarController extends Controller
             'deposit',
 
         ])
-        ->where('type',$id)->get();
+        ->with('type','brand')->where('type',$id)->get();
 
         if($cars){
             $response = [
