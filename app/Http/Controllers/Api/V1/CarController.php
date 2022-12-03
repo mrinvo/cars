@@ -41,6 +41,7 @@ class CarController extends Controller
             'name_'.app()->getLocale().' as name',
             'img',
             'type_id',
+            'brand_id',
             'capacity',
             'back_capacity',
             'doors',
