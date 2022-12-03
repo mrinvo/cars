@@ -92,11 +92,12 @@ class CarController extends Controller
             'img',
         ])->first();
 
-        $cars = Car::has('brand')->select([
+        $cars = car::select(
             'id',
             'name_'.app()->getLocale().' as name',
             'img',
-            'type',
+            'type_id',
+            'brand_id',
             'capacity',
             'back_capacity',
             'doors',
@@ -104,8 +105,18 @@ class CarController extends Controller
             'discounted_price',
             'deposit',
 
-        ])
-        ->where('brand_id',$id)->get();
+            )->with(['brand' => function ($q){
+                $q->select([
+                    'id',
+                    'name_' . app()->getLocale() . ' as name',
+                    'img'
+                ]);
+            }])->with(['type' => function ($q) {
+                $q->select([
+                    'id',
+                    'name_' . app()->getLocale() . ' as name',
+                ]);
+            }])->with('rent')->where('brand_id',$id)->first();
 
         if($cars){
             $response = [
@@ -132,11 +143,12 @@ class CarController extends Controller
 
     public function typeshow($id){
 
-        $cars = Car::select([
+        $cars = car::select(
             'id',
             'name_'.app()->getLocale().' as name',
             'img',
-            'type',
+            'type_id',
+            'brand_id',
             'capacity',
             'back_capacity',
             'doors',
@@ -144,8 +156,18 @@ class CarController extends Controller
             'discounted_price',
             'deposit',
 
-        ])
-        ->with('type','brand')->where('type',$id)->get();
+            )->with(['brand' => function ($q){
+                $q->select([
+                    'id',
+                    'name_' . app()->getLocale() . ' as name',
+                    'img'
+                ]);
+            }])->with(['type' => function ($q) {
+                $q->select([
+                    'id',
+                    'name_' . app()->getLocale() . ' as name',
+                ]);
+            }])->with('rent')->where('type_id',$id)->first();
 
         if($cars){
             $response = [
