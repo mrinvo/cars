@@ -5,7 +5,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Car;
 use App\Models\Rent;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+
 
 class CarController extends Controller
 {
@@ -49,7 +51,18 @@ class CarController extends Controller
             'discounted_price',
             'deposit',
 
-            )->with(['rent','brand','type'])->where('id',$id)->first();
+            )->with(['brand' => function ($q){
+                $q->select([
+                    'id',
+                    'name_' . app()->getLocale() . ' as name',
+                    'img'
+                ]);
+            }])->with(['type' => function ($q) {
+                $q->select([
+                    'id',
+                    'name_' . app()->getLocale() . ' as name',
+                ]);
+            }])->with('rent')->where('id',$id)->first();
 
         if($car){
             $response = [
